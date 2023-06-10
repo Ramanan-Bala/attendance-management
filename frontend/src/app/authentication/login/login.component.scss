@@ -1,0 +1,7 @@
+.master-div {
+  @apply flex flex-grow col-end-2 justify-center items-start min-h-full pt-32 bg-gray-300;
+
+  .form {
+    @apply p-8   shadow-xl shadow-slate-400 rounded min-w-[300px];
+  }
+}

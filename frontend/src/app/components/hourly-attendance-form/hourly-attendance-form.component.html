@@ -1,0 +1,127 @@
+<form nz-form [formGroup]="form" class="w-[450px]">
+  <nz-form-item>
+    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>Date</nz-form-label>
+    <nz-form-control nzErrorTip="Please select Date">
+      <nz-date-picker
+        nzFormat="dd-MM-yyyy"
+        formControlName="date"
+        id="date"
+        class="w-full"
+      ></nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+  <div class="grid grid-cols-2">
+    <nz-form-item class="min-w-full">
+      <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired>Dept</nz-form-label>
+      <nz-select
+        class="w-[130px]"
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder="Department"
+        formControlName="department"
+      >
+        <nz-option nzValue="CSE" nzLabel="CSE"></nz-option>
+        <!-- <nz-option nzValue="ECE" nzLabel="ECE"></nz-option>
+        <nz-option nzValue="EEE" nzLabel="EEE"></nz-option>
+        <nz-option nzValue="CIVIL" nzLabel="CIVIL"></nz-option>
+        <nz-option nzValue="MECH" nzLabel="MECH"></nz-option>
+        <nz-option nzValue="IT" nzLabel="IT"></nz-option>  -->
+      </nz-select>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired>Section</nz-form-label>
+      <nz-select
+        class="w-[130px]"
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder="Section"
+        formControlName="sectionId"
+      >
+        <nz-option
+          *ngFor="let s of sections"
+          [nzValue]="s.id"
+          [nzLabel]="s.name"
+        ></nz-option>
+      </nz-select>
+    </nz-form-item>
+
+    <p class="text-xs text-red-500 col-span-2 mb-2 pl-24" *ngIf="!timeTable">
+      NOTE: Time Table unavailable
+    </p>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired>Period</nz-form-label>
+      <nz-form-control nzErrorTip="Please select period!">
+        <nz-select
+          class="w-[130px]"
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Period"
+          formControlName="hour"
+        >
+          <nz-option nzValue="1" nzLabel="1"></nz-option>
+          <nz-option nzValue="2" nzLabel="2"></nz-option>
+          <nz-option nzValue="3" nzLabel="3"></nz-option>
+          <nz-option nzValue="4" nzLabel="4"></nz-option>
+          <nz-option nzValue="5" nzLabel="5"></nz-option>
+          <nz-option nzValue="6" nzLabel="6"></nz-option>
+          <nz-option nzValue="7" nzLabel="7"></nz-option>
+          <nz-option nzValue="8" nzLabel="8"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired>Subject</nz-form-label>
+      <nz-select
+        class="w-[130px]"
+        nzShowSearch
+        nzAllowClear
+        nzPlaceHolder="Subject"
+        formControlName="subjectId"
+      >
+        <nz-option
+          *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8]"
+          [nzValue]="timeTable?.['period' + i + 'SubjectId']"
+          [nzLabel]="timeTable?.['period' + i + 'SubjectName']"
+        ></nz-option>
+      </nz-select>
+    </nz-form-item>
+  </div>
+  <nz-form-item>
+    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>Student</nz-form-label>
+    <nz-form-control nzErrorTip="Please select students!">
+      <nz-select
+        nzShowSearch
+        nzAllowClear
+        [nzMaxTagCount]="1"
+        [nzMaxTagPlaceholder]="tagPlaceHolder"
+        nzMode="multiple"
+        nzPlaceHolder="Select Students"
+        formControlName="studentId"
+        id="student"
+      >
+        <nz-option
+          *ngFor="let s of students; let i = index"
+          [nzLabel]="s.rollNo + ' - ' + s.name"
+          [nzValue]="s.id"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired>Absent</nz-form-label>
+    <nz-form-control nzErrorTip="Please select value!">
+      <label nz-checkbox formControlName="isAbsent" id="absent"></label>
+    </nz-form-control>
+  </nz-form-item>
+
+  <button nz-button [nzType]="'primary'" class="w-full" (click)="submit()">
+    Submit
+  </button>
+</form>
+
+<ng-template #tagPlaceHolder let-selectedList
+  >and {{ form.controls["studentId"].value.length - 1 }} more
+  selected</ng-template
+>

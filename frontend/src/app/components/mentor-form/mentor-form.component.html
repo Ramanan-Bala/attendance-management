@@ -1,0 +1,77 @@
+<form
+  nz-form
+  [formGroup]="form"
+  class="w-[400px]"
+  nzLayout="vertical"
+  autocomplete="off"
+>
+  <h1 class="text-lg font-medium text-center leading">
+    {{ mentorId > 0 ? "Edit" : "Add" }} Mentor
+  </h1>
+  <nz-form-item>
+    <nz-form-label nzRequired class="text-gray-700">Name</nz-form-label>
+    <nz-form-control nzErrorTip="Please input mentor name">
+      <input nz-input type="text" formControlName="name" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzRequired nzFor="mentor">Email</nz-form-label>
+    <nz-form-control nzErrorTip="Please input mentor email">
+      <input nz-input formControlName="email" autocomplete="off" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item *ngIf="form.controls['password'].enabled">
+    <nz-form-label nzRequired nzFor="mentor">Password</nz-form-label>
+    <nz-form-control nzErrorTip="">
+      <input
+        nz-input
+        type="password"
+        formControlName="password"
+        autocomplete="off"
+      />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item *ngIf="students">
+    <nz-form-label nzRequired>Assign Student</nz-form-label>
+    <nz-form-control nzErrorTip="Please select students!">
+      <nz-select
+        nzAllowClear
+        nzShowSearch
+        [nzMaxTagCount]="1"
+        [nzMaxTagPlaceholder]="tagPlaceHolder"
+        nzMode="multiple"
+        nzPlaceHolder="Select Students"
+        formControlName="studentId"
+      >
+        <nz-option
+          *ngFor="let s of students"
+          [nzLabel]="s.rollNo + ' - ' + s.name"
+          [nzValue]="s.id"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div class="flex gap-4">
+    <button nz-button [nzType]="'primary'" class="flex-grow" (click)="submit()">
+      {{ mentorId > 0 ? "Save" : "Add" }}
+    </button>
+    <button
+      nz-button
+      [nzType]="'default'"
+      class="flex-grow"
+      *ngIf="mentorId > 0"
+      (click)="mentorId = -1; form.reset(); students = []"
+    >
+      cancel
+    </button>
+  </div>
+</form>
+
+<ng-template #tagPlaceHolder
+  >and {{ form.controls["studentId"].value.length - 1 }} more
+  selected</ng-template
+>

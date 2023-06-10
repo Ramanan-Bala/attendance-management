@@ -1,0 +1,54 @@
+<div class="calendar">
+  <div class="calender-header">
+    <p
+      class="month font-medium text-base cursor-pointer"
+      (click)="
+        setCalendar({
+          date: today.getDate(),
+          month: today.getMonth(),
+          year: today.getFullYear()
+        })
+      "
+    >
+      {{ months[date.getMonth()] }} {{ date.getFullYear() }}
+    </p>
+    <div class="navigation">
+      <span
+        nz-icon
+        nzType="left"
+        nzTheme="outline"
+        (click)="setCalendar({ month: date.getMonth() - 1 })"
+      ></span>
+      <span
+        nz-icon
+        nzType="right"
+        nzTheme="outline"
+        (click)="setCalendar({ month: date.getMonth() + 1 })"
+      ></span>
+    </div>
+  </div>
+  <div class="weekdays">
+    <div>Su</div>
+    <div>Mo</div>
+    <div>Tu</div>
+    <div>We</div>
+    <div>Th</div>
+    <div>Fr</div>
+    <div>Sa</div>
+  </div>
+  <div class="calendar-body">
+    <div *ngFor="let i of previousDayCount"></div>
+    <button
+      *ngFor="let i of calendarDates; let idx = index"
+      class="date"
+      [disabled]="i.isDisabled"
+      [ngClass]="{
+        click: dateToString(i.fullDate) === dateToString(selectedDate),
+        inactive: i.isDisabled
+      }"
+      (click)="onCalendarChange(i.fullDate, i.isDisabled)"
+    >
+      {{ i.date }}
+    </button>
+  </div>
+</div>

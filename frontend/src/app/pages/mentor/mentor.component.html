@@ -1,0 +1,74 @@
+<div class="flex gap-10" @fade>
+  <div class="flex-grow">
+    <nz-table
+      #basicTable
+      nzSize="small"
+      [nzData]="mentors"
+      [nzLoading]="isLoading"
+      [nzShowPagination]="false"
+      [(nzPageSize)]="pageSize"
+      [(nzPageIndex)]="pageIndex"
+    >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th nzWidth="50px">Students</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of basicTable.data">
+          <td>{{ m.name }}</td>
+          <td>{{ m.email }}</td>
+          <td>{{ m.studentsCount }}</td>
+          <td>
+            <div class="flex gap-4 items-center">
+              <span
+                class="text-red-400 text-base cursor-pointer"
+                nz-icon
+                nzType="delete"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipTitle="Delete"
+                nz-popconfirm
+                nzPopconfirmPlacement="bottom"
+                nzPopconfirmTitle="Are you sure delete this mentor?"
+                (nzOnConfirm)="deleteMentor(m.id)"
+              ></span>
+              <span
+                class="text-blue-400 text-base cursor-pointer"
+                nz-icon
+                nzType="edit"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipTitle="Edit"
+                (click)="mentorId = m.id"
+              ></span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="flex justify-end mt-4">
+      <nz-pagination
+        nzSize="small"
+        [(nzPageIndex)]="pageIndex"
+        [(nzPageSize)]="pageSize"
+        [nzTotal]="total"
+        [nzShowTotal]="rangeTemplate"
+        nzShowSizeChanger
+      ></nz-pagination>
+    </div>
+  </div>
+  <div class="shadow border border-gray-100 rounded p-6">
+    <app-mentor-form
+      [(mentorId)]="mentorId"
+      (onFormSubmit)="getMentors()"
+    ></app-mentor-form>
+
+    <ng-template #rangeTemplate let-range="range" let-total>
+      {{ range[0] }}-{{ range[1] }} of {{ total }} items
+    </ng-template>
+  </div>
+</div>

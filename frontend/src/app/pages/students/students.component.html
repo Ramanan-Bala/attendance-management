@@ -1,0 +1,169 @@
+<div class="flex gap-10" @fade>
+  <div class="flex-grow">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-4">
+        <nz-select
+          class="w-[100px]"
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Year"
+          [formControl]="year"
+        >
+          <nz-option nzValue="1" nzLabel="I"></nz-option>
+          <nz-option nzValue="2" nzLabel="II"></nz-option>
+          <nz-option nzValue="3" nzLabel="III"></nz-option>
+          <nz-option nzValue="4" nzLabel="IV"></nz-option>
+        </nz-select>
+        <nz-select
+          class="w-[100px]"
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Section"
+          [formControl]="section"
+        >
+          <nz-option
+            *ngFor="let s of sections"
+            [nzValue]="s.id"
+            [nzLabel]="s.name"
+          ></nz-option>
+        </nz-select>
+        <input
+          type="file"
+          class="hidden"
+          accept=".csv"
+          #file
+          (change)="handleUpload(file)"
+        />
+        <button
+          nz-button
+          [disabled]="section.invalid || year.invalid"
+          (click)="file.click()"
+        >
+          <span nz-icon nzType="upload"></span>
+          Upload Student CSV
+        </button>
+      </div>
+      <nz-input-group [nzSuffix]="suffixIconSearch" class="w-[220px]">
+        <input
+          type="text"
+          nz-input
+          placeholder="Search..."
+          [(ngModel)]="search"
+        />
+      </nz-input-group>
+    </div>
+    <nz-table
+      #basicTable
+      nzSize="small"
+      [nzData]="students"
+      [nzLoading]="isLoading"
+      [nzShowPagination]="false"
+      [nzFrontPagination]="false"
+      [(nzPageSize)]="pageSize"
+      [(nzPageIndex)]="pageIndex"
+      (nzQueryParams)="getStudents($event)"
+      class="shadow rounded"
+    >
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Roll No</th>
+          <th>Register No</th>
+          <th
+            nzColumnKey="fYear"
+            [nzFilterFn]="true"
+            [nzFilters]="[
+              { text: 'I', value: 1 },
+              { text: 'II', value: 2 },
+              { text: 'III', value: 3 },
+              { text: 'IV', value: 4 }
+            ]"
+          >
+            Year
+          </th>
+          <th
+            nzColumnKey="fSec"
+            [nzFilterFn]="true"
+            [nzFilters]="[
+              { text: 'A', value: 1 },
+              { text: 'B', value: 2 },
+              { text: 'C', value: 3 },
+              { text: 'D', value: 4 },
+              { text: 'E', value: 5 }
+            ]"
+          >
+            Section
+          </th>
+          <th
+            nzColumnKey="fMentor"
+            [nzFilterFn]="true"
+            [nzFilters]="mentors"
+            *ngIf="mentors.length > 1"
+          >
+            Mentor
+          </th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of basicTable.data">
+          <td>{{ s.name }}</td>
+          <td>{{ s.rollNo }}</td>
+          <td>{{ s.regNo }}</td>
+          <td>{{ s.yearName }}</td>
+          <td>{{ s.sectionName }}</td>
+          <td>{{ s.mentorName }}</td>
+          <td>
+            <div class="flex gap-4 items-center">
+              <span
+                class="text-red-400 text-base cursor-pointer"
+                nz-icon
+                nzType="delete"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipTitle="Delete"
+                nz-popconfirm
+                nzPopconfirmPlacement="bottom"
+                nzPopconfirmTitle="Are you sure delete this student?"
+                (nzOnConfirm)="deleteStudent(s.id)"
+              ></span>
+              <span
+                class="text-blue-400 text-base cursor-pointer"
+                nz-icon
+                nzType="edit"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipTitle="Edit"
+                (click)="studentId = s.id"
+              ></span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div class="flex justify-end mt-4">
+      <nz-pagination
+        nzSize="small"
+        [(nzPageIndex)]="pageIndex"
+        [(nzPageSize)]="pageSize"
+        [nzTotal]="total"
+        [nzShowTotal]="rangeTemplate"
+        nzShowSizeChanger
+      ></nz-pagination>
+    </div>
+  </div>
+  <div class="shadow border border-gray-100 rounded p-6 self-start">
+    <app-student-form
+      [(studentId)]="studentId"
+      (onFormSubmit)="getStudents()"
+    ></app-student-form>
+  </div>
+</div>
+
+<ng-template #rangeTemplate let-range="range" let-total>
+  {{ range[0] }}-{{ range[1] }} of {{ total }} items
+</ng-template>
+
+<ng-template #suffixIconSearch>
+  <span nz-icon nzType="search"></span>
+</ng-template>

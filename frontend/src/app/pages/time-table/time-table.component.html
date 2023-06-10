@@ -1,0 +1,76 @@
+<div class="flex gap-10" @fade>
+  <div class="flex-grow">
+    <nz-table
+      #basicTable
+      [nzData]="timeTables"
+      [nzLoading]="isLoading"
+      [nzShowPagination]="false"
+      class="shadow"
+      nzSize="small"
+    >
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>year</th>
+          <th>Section</th>
+          <th>Period 1</th>
+          <th>Period 2</th>
+          <th>Period 3</th>
+          <th>Period 4</th>
+          <th>Period 5</th>
+          <th>Period 6</th>
+          <th>Period 7</th>
+          <th>Period 8</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of basicTable.data">
+          <td>{{ t.day }}</td>
+          <td>{{ t.yearName }}</td>
+          <td>{{ t.sectionName }}</td>
+          <td>{{ t.period1SubjectName }}</td>
+          <td>{{ t.period2SubjectName }}</td>
+          <td>{{ t.period3SubjectName }}</td>
+          <td>{{ t.period4SubjectName }}</td>
+          <td>{{ t.period5SubjectName }}</td>
+          <td>{{ t.period6SubjectName }}</td>
+          <td>{{ t.period7SubjectName }}</td>
+          <td>{{ t.period8SubjectName }}</td>
+          <td>
+            <div class="flex gap-4 items-center">
+              <span
+                class="text-red-400 text-base cursor-pointer"
+                nz-icon
+                nzType="delete"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipTitle="Delete"
+                nz-popconfirm
+                nzPopconfirmPlacement="bottom"
+                nzPopconfirmTitle="Are you sure delete this time table?"
+                (nzOnConfirm)="deleteTimeTable(t.id)"
+              ></span>
+              <span
+                class="text-blue-400 text-base cursor-pointer"
+                nz-icon
+                nzType="edit"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipTitle="Edit"
+                (click)="timeTableId = t.id"
+              ></span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  <div class="shadow border border-gray-100 rounded p-6">
+    <app-time-table-form
+      [(timeTableId)]="timeTableId"
+      [timeTables]="timeTables"
+      (onFormSubmit)="getTimeTable()"
+    ></app-time-table-form>
+  </div>
+</div>

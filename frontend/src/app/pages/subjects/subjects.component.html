@@ -1,0 +1,94 @@
+<div class="w-full flex flex-col justify-center items-center" @fade>
+  <div class="w-[1000px]">
+    <form
+      nz-form
+      nzLayout="inline"
+      [formGroup]="form"
+      class="flex items-start justify-end mb-4"
+    >
+      <div>
+        <nz-form-item class="!mb-0">
+          <nz-form-label nzRequired class="text-gray-700">Code</nz-form-label>
+          <nz-form-control nzErrorTip="Please Input Code">
+            <input
+              nz-input
+              type="text"
+              formControlName="code"
+              class="max-w-[200px]"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div>
+        <nz-form-item class="!mb-0">
+          <nz-form-label nzRequired class="text-gray-700">Name</nz-form-label>
+          <nz-form-control nzErrorTip="Please Input Name">
+            <input
+              nz-input
+              type="text"
+              formControlName="name"
+              class="max-w-[200px]"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <button nz-button [nzType]="'primary'" (click)="submit()">
+        {{ id === -1 ? "Add" : "Edit" }}
+      </button>
+      <button
+        nz-button
+        [nzType]="'default'"
+        *ngIf="id > 0"
+        (click)="id = -1; form.reset()"
+      >
+        cancel
+      </button>
+    </form>
+    <nz-table
+      #basicTable
+      [nzData]="subjects"
+      [nzLoading]="isLoading"
+      [nzShowPagination]="false"
+      class="shadow rounded"
+    >
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of basicTable.data">
+          <td>{{ s.code }}</td>
+          <td>{{ s.name }}</td>
+          <td>
+            <div class="flex gap-4 items-center">
+              <span
+                class="text-red-400 text-base cursor-pointer"
+                nz-icon
+                nzType="delete"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipTitle="Delete"
+                nz-popconfirm
+                nzPopconfirmPlacement="bottom"
+                nzPopconfirmTitle="Are you sure delete this subject?"
+                (nzOnConfirm)="delete(s.id)"
+              ></span>
+              <span
+                class="text-blue-400 text-base cursor-pointer"
+                nz-icon
+                nzType="edit"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipTitle="Edit"
+                (click)="edit(s.id, s.name, s.code)"
+              ></span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

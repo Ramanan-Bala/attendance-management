@@ -1,0 +1,32 @@
+.menu {
+  @apply w-[250px] bg-[#1E293B] h-screen flex flex-col justify-between;
+  .logo {
+    @apply pb-6 flex flex-col items-center pt-4 font-bold border-b-2 border-b-slate-200/40;
+  }
+  ul {
+    .menu-item {
+      @apply text-base gap-2 flex items-center p-2 px-4 m-2 hover:bg-[#334155] rounded cursor-pointer transition-all duration-300 text-white;
+    }
+    .smenu-item {
+      @apply m-2 hover:bg-slate-300 rounded cursor-pointer transition-all duration-300;
+      div:first-child {
+        span {
+          @apply text-xs;
+        }
+        @apply flex items-center justify-between p-2 py-1;
+        > div {
+          @apply flex items-center gap-2;
+          span {
+            @apply text-base;
+          }
+        }
+      }
+    }
+    .sub-item-container {
+      @apply bg-slate-200 m-2 rounded;
+      .sub-items {
+        @apply p-2 hover:bg-slate-300 rounded cursor-pointer transition-all duration-300 flex items-center gap-4 pl-8;
+      }
+    }
+  }
+}

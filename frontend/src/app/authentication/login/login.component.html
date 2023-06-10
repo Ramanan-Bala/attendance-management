@@ -1,0 +1,65 @@
+<div class="master-div">
+  <form
+    nz-form
+    [formGroup]="validateForm"
+    (ngSubmit)="submitForm()"
+    class="form bg-[#FFFF]"
+  >
+    <h1
+      class="text-3xl font-medium pb-[25px] leading-none flex justify-center text-[#061C3D]"
+    >
+      Enter your credentials
+    </h1>
+
+    <nz-form-item>
+      <nz-form-label
+        nzRequired
+        [nzSpan]="7"
+        class="text-2xl text-[#061C3D] font-semibold leading-3"
+        >Email</nz-form-label
+      >
+      <nz-form-control nzErrorTip="Please input your email!">
+        <nz-input-group nzPrefixIcon="mail">
+          <input
+            type="text"
+            nz-input
+            formControlName="email"
+            placeholder="Email"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label
+        nzRequired
+        [nzSpan]="7"
+        class="text-2xl font-semibold text-[#061C3D] leading-3"
+        >Password</nz-form-label
+      >
+      <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-input-group nzPrefixIcon="lock" class="w-full">
+          <input
+            type="password"
+            nz-input
+            formControlName="password"
+            placeholder="Password"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <div nz-row class="flex justify-center flex-col min-w-full">
+      <nz-form-item> </nz-form-item>
+      <button
+        nz-button
+        class="min-w-full bg-[#061C3D] text-white border border-[#061C3D] hover:bg-[#061C3D] hover:text-white"
+      >
+        Log in
+      </button>
+    </div>
+  </form>
+
+  <!-- <img
+      src="https://coe.panimalar.ac.in/assets/images/slider-image-1-1920x600.jpg"
+      alt="logo"
+    /> -->
+</div>

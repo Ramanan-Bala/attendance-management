@@ -1,0 +1,44 @@
+<div class="flex gap-4 items-center mb-2">
+  <nz-select
+    class="w-[100px]"
+    nzShowSearch
+    nzAllowClear
+    nzPlaceHolder="Year"
+    [(ngModel)]="selectedYear"
+    (ngModelChange)="getStudents()"
+  >
+    <nz-option nzValue="1" nzLabel="I"></nz-option>
+    <nz-option nzValue="2" nzLabel="II"></nz-option>
+    <nz-option nzValue="3" nzLabel="III"></nz-option>
+    <nz-option nzValue="4" nzLabel="IV"></nz-option>
+  </nz-select>
+  <nz-select
+    class="w-[100px]"
+    nzShowSearch
+    nzAllowClear
+    nzPlaceHolder="Section"
+    [(ngModel)]="selectedSection"
+    (ngModelChange)="getStudents()"
+  >
+    <nz-option
+      *ngFor="let s of sections"
+      [nzValue]="s.id"
+      [nzLabel]="s.name"
+    ></nz-option>
+  </nz-select>
+</div>
+<nz-transfer
+  [nzDataSource]="list"
+  nzShowSearch
+  [nzListStyle]="{ 'width.px': 300, 'height.px': 400 }"
+  [nzRender]="render"
+  @fade
+  [nzTitles]="['Present', 'Absentees']"
+  nzItemUnit="Student"
+  nzItemsUnit="Students"
+  (nzChange)="change($event)"
+>
+  <ng-template #render let-item>
+    {{ item.rollNo }} - {{ item.name }}
+  </ng-template>
+</nz-transfer>

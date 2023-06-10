@@ -1,0 +1,105 @@
+<div class="w-[450px] mt-10">
+  <form nz-form [formGroup]="form">
+    <nz-form-item>
+      <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="date"
+        >Date</nz-form-label
+      >
+      <nz-form-control nzErrorTip="Please select date">
+        <nz-date-picker
+          nzFormat="dd-MM-yyyy"
+          formControlName="date"
+          id="date"
+          class="w-full"
+        ></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="student"
+        >Student</nz-form-label
+      >
+      <nz-form-control nzErrorTip="Please select students!">
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          [nzMaxTagCount]="1"
+          [nzMaxTagPlaceholder]="tagPlaceHolder"
+          nzMode="multiple"
+          nzPlaceHolder="Select Students"
+          formControlName="studentId"
+          id="student"
+        >
+          <nz-option
+            *ngFor="let s of students"
+            [nzLabel]="s.rollNo + ' - ' + s.name"
+            [nzValue]="s.id"
+          ></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <!-- <form [formGroup]="reasonForm">
+    <nz-form-item>
+      <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="text-data"
+        >Add Reason</nz-form-label
+      >
+      <nz-form-control>
+        <textarea
+          nz-input
+          placeholder="Reason"
+          [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+          id="text-data"
+          formControlName="reason"
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form> -->
+  <button nz-button [nzType]="'primary'" class="w-full" (click)="submit()">
+    Submit
+  </button>
+</div>
+<div class="w-[500px]">
+  <h1 class="my-4 text-lg font-medium text-center">Absentees</h1>
+  <nz-empty
+    nzNotFoundContent="No Absentees"
+    *ngIf="absentees.length == 0"
+  ></nz-empty>
+  <nz-table
+    [nzData]="absentees"
+    *ngIf="absentees.length > 0"
+    nzSize="small"
+    [nzShowPagination]="false"
+    [nzScroll]="{ y: '200px' }"
+  >
+    <thead>
+      <tr>
+        <th>Roll No</th>
+        <th>Name</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let abs of absentees">
+        <td>{{ abs.studentRollNo }}</td>
+        <td>{{ abs.studentName }}</td>
+        <td>
+          <span
+            class="text-red-400 text-base cursor-pointer"
+            nz-icon
+            nzType="delete"
+            nzTheme="outline"
+            nz-tooltip
+            nzTooltipTitle="Delete"
+            nz-popconfirm
+            nzPopconfirmPlacement="bottom"
+            nzPopconfirmTitle="Are you sure delete?"
+            (nzOnConfirm)="deleteAttendance(abs.id)"
+          ></span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+
+<ng-template #tagPlaceHolder
+  >and {{ form.controls["studentId"].value.length - 1 }} more selected
+</ng-template>

@@ -1,0 +1,30 @@
+<div class="grid grid-cols-3 justify-center max-h-[400px] items-start mb-10">
+  <div>
+    <nz-date-picker [(ngModel)]="date"></nz-date-picker>
+    <canvas id="doughnut"></canvas>
+  </div>
+  <div class="col-span-2">
+    <nz-range-picker
+      [(ngModel)]="dateRange"
+      (ngModelChange)="generateChart($event)"
+    ></nz-range-picker>
+    <nz-select
+      *ngIf="user.role === 'ADMIN'"
+      [(ngModel)]="year"
+      (ngModelChange)="
+        generateChart([dateRange[0], dateRange[1]]); generateDonut()
+      "
+      class="ml-4 w-24"
+    >
+      <nz-option [nzValue]="1" nzLabel="I"></nz-option>
+      <nz-option [nzValue]="2" nzLabel="II"></nz-option>
+      <nz-option [nzValue]="3" nzLabel="III"></nz-option>
+      <nz-option [nzValue]="4" nzLabel="IV"></nz-option>
+    </nz-select>
+    <canvas class="mt-[40px]" id="lineChart"></canvas>
+  </div>
+</div>
+
+<div class="max-h-[440px] w-full mt-8 flex justify-center">
+  <canvas id="barChart"></canvas>
+</div>

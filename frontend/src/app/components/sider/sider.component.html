@@ -1,0 +1,122 @@
+<div class="menu">
+  <div>
+    <div class="logo">
+      <img src="assets/pec-logo.png" alt="logo " />
+    </div>
+    <ul>
+      <ng-container *ngFor="let m of menu; let id = index">
+        <li
+          class="menu-item"
+          *ngIf="!m.children"
+          [routerLink]="m.path"
+          routerLinkActive="bg-[#334155]"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span
+            nz-icon
+            [nzType]="m.icon"
+            nzTheme="outline"
+            class="text-sky-500"
+          ></span>
+          <span>{{ m.title }}</span>
+        </li>
+        <li class="smenu-item" (click)="toggle(id)" *ngIf="m.children">
+          <div>
+            <div>
+              <span nz-icon [nzType]="m.icon" nzTheme="outline"></span>
+              <span>{{ m.title }}</span>
+            </div>
+            <span
+              nz-icon
+              [nzType]="dropdown.isOpen && dropdown.id === id ? 'up' : 'down'"
+              nzTheme="outline"
+              *ngIf="m.children"
+            ></span>
+          </div>
+        </li>
+        <div
+          class="sub-item-container"
+          *ngIf="dropdown.isOpen && dropdown.id === id"
+          @slide
+        >
+          <div
+            *ngFor="let cm of m.children"
+            class="sub-items"
+            [routerLink]="cm.path"
+            routerLinkActive="bg-[#334155]"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span nz-icon [nzType]="cm.icon" nzTheme="outline"></span>
+            <span>{{ cm.title }}</span>
+          </div>
+        </div>
+      </ng-container>
+    </ul>
+  </div>
+  <button
+    nz-button
+    [nzType]="'primary'"
+    class="w-full text-md"
+    (click)="isVisible = !isVisible"
+  >
+    <span nz-icon nzType="download"></span>Export Data
+  </button>
+</div>
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Export Data"
+  (nzOnCancel)="isVisible = !isVisible"
+  [nzFooter]="null"
+>
+  <ng-container *nzModalContent>
+    <div class="flex flex-col gap-5">
+      <div>
+        <nz-radio-group
+          ngModel="day"
+          (ngModelChange)="changeReportType($event)"
+        >
+          <label nz-radio nzValue="day">Day Report</label>
+          <label nz-radio nzValue="full">Full Report</label>
+        </nz-radio-group>
+        <label nz-checkbox [(ngModel)]="isEmail">Send mail</label>
+      </div>
+      <div class="flex items-center gap-4">
+        <nz-select
+          class="w-[100px]"
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Year"
+          [formControl]="year"
+        >
+          <nz-option nzValue="1" nzLabel="I"></nz-option>
+          <nz-option nzValue="2" nzLabel="II"></nz-option>
+          <nz-option nzValue="3" nzLabel="III"></nz-option>
+          <nz-option nzValue="4" nzLabel="IV"></nz-option>
+        </nz-select>
+        <nz-select
+          class="w-[100px]"
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Section"
+          [formControl]="section"
+        >
+          <nz-option
+            *ngFor="let s of sections"
+            [nzValue]="s.id"
+            [nzLabel]="s.name"
+          ></nz-option>
+        </nz-select>
+        <nz-date-picker [formControl]="date"></nz-date-picker>
+        <button
+          nz-button
+          [nzType]="'primary'"
+          [disabled]="year.invalid || (date.enabled ? date.invalid : false)"
+          (click)="getReport()"
+        >
+          Download
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</nz-modal>
